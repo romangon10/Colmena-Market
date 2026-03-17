@@ -36,10 +36,8 @@ Crear un ecosistema tipo marketplace donde cada usuario pueda:
 
 ## 🛠️ Tecnologías utilizadas
 
-*(Podés editar esto según lo que uses)*
 
 * Frontend: HTML, CSS, JavaScript / React
-* Backend: Node.js / Python (Flask o Django)
 * Base de datos: MySQL / MongoDB
 * Control de versiones: Git & GitHub
 
