@@ -3,32 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colmena Market</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Colmena Market: catálogo de básicos, carrito y pedidos de demostración.">
+  <title>Colmena Market · Elegí lo esencial</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/script.js" defer></script>
 </head>
 <body>
-  <header>
-    <div class="logo">Colmena Market</div>
-    <input type="text" placeholder="Buscar perfumes, ropa..." id="search">
-    <nav>
-      <a href="#">Inicio</a>
-      <a href="#">Categorías</a>
-      <a href="#">Carrito 🛒</a>
-      <a href="#">Login</a>
-    </nav>
+  <a class="skip" href="#catalog">Saltar al catálogo</a>
+  <div class="announcement">PORTFOLIO DEMO <span>Productos y pedidos de prueba. Sin cobros ni envíos.</span></div>
+  <header class="header">
+    <a class="brand" href="/">colmena<span>market</span><b aria-hidden="true">.</b></a>
+    <a class="catalog-link" href="#catalog">La colección</a>
+    <button id="open-cart" class="cart-button" type="button">Mi carrito <span id="cart-count">0</span></button>
   </header>
-
   <main>
-    <h2>Productos destacados</h2>
-    <div class="productos" id="product-list">
-      <!-- Los productos se insertan con JS -->
-    </div>
+    <section class="intro" aria-labelledby="headline">
+      <div><p class="eyebrow">MENOS VUELTAS. MEJORES BÁSICOS.</p><h1 id="headline">Elegí lo<br><em>esencial.</em></h1></div>
+      <div class="intro-copy"><p>Una selección simple para tu día a día.<br>Explorá, combiná y armá tu próximo pedido.</p><a href="#catalog" class="text-link">Explorar la colección <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section id="catalog" aria-labelledby="catalog-title">
+      <div class="section-heading"><h2 id="catalog-title">La colección <span id="result-count"></span></h2><p>Precios de demostración en pesos argentinos</p></div>
+      <div class="toolbar">
+        <label class="search"><span>Buscar</span><input id="search" type="search" maxlength="100" placeholder="Perfumes, ropa, calzado…"></label>
+        <label>Categoría<select id="category"><option value="">Todo</option><option>Perfumes</option><option>Ropa</option><option>Calzado</option></select></label>
+        <label>Ordenar<select id="sort"><option value="featured">Destacados</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option></select></label>
+      </div>
+      <p id="catalog-status" role="status">Cargando la colección…</p>
+      <button id="retry" type="button" hidden>Volver a intentar</button>
+      <div id="product-list" class="products" aria-busy="true"></div>
+    </section>
+    <section class="note"><h2>Lo simple funciona.</h2><p>Explorá los productos y probá el recorrido de compra. El pedido se guarda como demostración; no ingreses datos personales ni medios de pago.</p><a href="https://github.com/romangon10/Colmena-Market">Ver el proyecto en GitHub ↗</a></section>
   </main>
-
-  <footer>
-    © 2025 Colmena Market - Todos los derechos reservados
-  </footer>
-
-  <script src="script.js"></script>
+  <footer><span>colmena market.</span><p>Un proyecto de Román González · 2026</p></footer>
+  <dialog id="cart-dialog" aria-labelledby="cart-title">
+    <div class="dialog-heading"><h2 id="cart-title">Tu selección</h2><button id="close-cart" type="button" aria-label="Cerrar carrito">✕</button></div>
+    <p class="muted">Pedido de demostración · Sin cargos</p>
+    <div id="cart-items"></div>
+    <div class="total"><span>Total</span><strong id="cart-total">$0</strong></div>
+    <p id="checkout-status" role="status"></p>
+    <button id="checkout" class="primary" type="button">Confirmar pedido de prueba</button>
+    <p class="fine">El stock se valida al confirmar. No se realizan pagos ni envíos.</p>
+  </dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
 </body>
 </html>
