@@ -6,12 +6,11 @@ A small full-stack commerce demo by [Román González](https://github.com/romang
 
 ## Run locally
 
-Requires **Node.js 24.14 or later in the Node 24 series**. Uses built-in Node modules; no third-party packages or installation step is needed.
+Requires **Node.js 24.14 or later in the Node 24 series**. Uses built-in Node modules; no installation step is needed for local execution. Building migrations uses the pinned development dependencies (`npm ci`).
 
 ```sh
 git clone https://github.com/romangon10/Colmena-Market.git
 cd Colmena-Market
-git switch feature/full-stack-market
 npm start
 ```
 
@@ -88,3 +87,9 @@ Externally hosted images; availability and reuse terms belong to their respectiv
 ## Contact
 
 [GitHub](https://github.com/romangon10) · [LinkedIn](https://www.linkedin.com/in/romannicolasgonzalez/)
+
+## Online deployment
+
+The `worker/` adapter serves the same storefront on Cloudflare Workers with a persistent D1 database. The local Node/SQLite server remains available. `db/schema.ts` and generated `drizzle/` migrations own the hosted schema; seeding inserts the four demo products without restoring consumed stock.
+
+Run `npm ci`, `npm run db:generate` after schema changes, and `npm run build` to package the Worker. `.openai/hosting.json` identifies the privately hosted Site. Hosting applies the generated migrations before deploying. Hosted request handlers use the Web Request/Response APIs instead of a Node HTTP listener.

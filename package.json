@@ -3,6 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24.14.0 <25" },
-  "scripts": { "start": "node server/index.js", "dev": "node --watch server/index.js", "test": "node --test", "check": "node --check server/index.js && node --check server/store.js && node --check script.js" }
+  "engines": {
+    "node": ">=24.14.0 <25"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test",
+    "check": "node --check server/index.js && node --check server/store.js && node --check script.js",
+    "build": "node scripts/build.mjs",
+    "db:generate": "drizzle-kit generate"
+  },
+  "devDependencies": {
+    "drizzle-kit": "0.31.10",
+    "drizzle-orm": "0.45.2"
+  }
 }
