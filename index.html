@@ -29,6 +29,7 @@
       <a class="catalog-link" href="#catalog">Colección</a>
       <a class="catalog-link" href="#experience">Experiencia</a>
     </nav>
+    <button id="favorites-filter" class="favorites-button" type="button" aria-pressed="false"><span aria-hidden="true">◇</span> Favoritos <b id="favorites-count">0</b></button>
     <button id="open-cart" class="cart-button" type="button">
       <span class="cart-label">Carrito</span>
       <span id="cart-count">0</span>
@@ -59,6 +60,10 @@
       </div>
     </section>
 
+    <div class="signal-ticker" aria-label="Tecnologías y capacidades">
+      <div><span>FULL STACK COMMERCE</span><i>◆</i><span>REAL-TIME STOCK</span><i>◆</i><span>SQL PERSISTENCE</span><i>◆</i><span>AUTOMATED QUALITY</span><i>◆</i><span>SECURE API</span><i>◆</i><span>FULL STACK COMMERCE</span></div>
+    </div>
+
     <section class="system-strip" aria-label="Características">
       <article><span>01</span><div><strong>Selección curada</strong><small>Esenciales elegidos para vos</small></div></article>
       <article><span>02</span><div><strong>Stock en tiempo real</strong><small>Validación en cada pedido</small></div></article>
@@ -82,8 +87,21 @@
       <div id="product-list" class="products" aria-busy="true"></div>
     </section>
 
+    <section class="technology" aria-labelledby="technology-title">
+      <div class="technology-heading">
+        <p class="eyebrow"><span>03</span> SYSTEM / ARCHITECTURE</p>
+        <h2 id="technology-title">Tecnología que<br><em>no se ve, pero se siente.</em></h2>
+      </div>
+      <div class="technology-grid">
+        <article><span>INTERFACE</span><strong>HTML · CSS · JavaScript</strong><p>Una experiencia rápida, adaptable y accesible sin peso innecesario.</p></article>
+        <article><span>ENGINE</span><strong>Node.js · REST API</strong><p>Reglas de negocio y validación ejecutadas en el servidor.</p></article>
+        <article><span>DATA</span><strong>SQLite · Cloudflare D1</strong><p>Stock y pedidos persistentes con transacciones seguras.</p></article>
+        <article><span>QUALITY</span><strong>Automated Tests · CI</strong><p>Controles automáticos para proteger cada cambio.</p></article>
+      </div>
+    </section>
+
     <section id="experience" class="experience">
-      <div class="experience-index">03</div>
+      <div class="experience-index">04</div>
       <div>
         <p class="eyebrow">COLMENA EXPERIENCE</p>
         <h2>Diseñado para<br><em>lo que viene.</em></h2>
@@ -105,6 +123,21 @@
     <p>Proyecto de <a href="https://github.com/romangon10">Román González</a></p>
   </footer>
 
+  <dialog id="product-dialog" class="product-dialog" aria-labelledby="detail-name">
+    <button id="close-product" class="detail-close" type="button" aria-label="Cerrar detalle">✕</button>
+    <div class="detail-layout">
+      <div class="detail-media"><img id="detail-image" alt=""></div>
+      <div class="detail-copy">
+        <p id="detail-category" class="eyebrow"></p>
+        <h2 id="detail-name"></h2>
+        <p id="detail-description" class="detail-description"></p>
+        <div class="detail-meta"><span>PRECIO</span><strong id="detail-price"></strong></div>
+        <p id="detail-stock" class="stock"></p>
+        <button id="detail-add" class="primary" type="button">Agregar a mi selección</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="cart-dialog" aria-labelledby="cart-title">
     <div class="dialog-heading">
       <div><p class="eyebrow">TU ARCHIVO</p><h2 id="cart-title">Selección</h2></div>
@@ -118,6 +151,7 @@
     <p class="fine">El stock se valida al confirmar. No se realizan pagos ni envíos.</p>
   </dialog>
 
+  <button id="back-top" class="back-top" type="button" aria-label="Volver arriba" hidden>↑</button>
   <div id="toast" class="toast" role="status" hidden></div>
 </body>
 </html>
