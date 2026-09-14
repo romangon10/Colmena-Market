@@ -6,6 +6,12 @@ const photos = {
   3: 'https://img01.ztat.net/article/spp-media-p1/ec39d7a9cdce40a1b55b9cc2d983d9a9/2a33807d407a4a74a968d11a74be3968.jpg?imwidth=762',
   4: 'https://www.jousenshoes.com/cdn/shop/files/7_5c6cfdce-26b5-4652-b5e2-86ad2bb6fae5_2048x.jpg?v=1756452913'
 };
+const previewProducts = [
+  { id: 1, name: 'Perfume Acqua', category: 'Perfumes', description: 'Una nota fresca para todos los días. Presentación de muestra.', price: 2500000, stock: 12 },
+  { id: 2, name: 'Camisa Blanca', category: 'Ropa', description: 'El básico que combina con todo. Talle único de demostración.', price: 1500000, stock: 20 },
+  { id: 3, name: 'Jeans Azul', category: 'Ropa', description: 'Denim clásico de corte recto. Talle único de demostración.', price: 3000000, stock: 15 },
+  { id: 4, name: 'Zapatillas Urban', category: 'Calzado', description: 'Líneas simples para la ciudad. Talle único de demostración.', price: 5000000, stock: 8 }
+];
 let products = [];
 let cart = new Map();
 let requestKey = null;
@@ -119,7 +125,10 @@ async function loadProducts() {
     renderCart();
   } catch {
     if (version !== loadVersion) return;
-    $('catalog-status').textContent = 'No pudimos actualizar la colección. Revisá la conexión y volvé a intentar.';
+    products = previewProducts;
+    renderProducts();
+    renderCart();
+    $('catalog-status').textContent = 'Vista visual activa. Conectá el servidor para registrar pedidos.';
     $('retry').hidden = false;
   } finally { if (version === loadVersion) $('product-list').setAttribute('aria-busy', 'false'); }
 }
