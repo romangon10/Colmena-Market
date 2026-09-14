@@ -3,47 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Colmena Market: catálogo de básicos, carrito y pedidos de demostración.">
-  <title>Colmena Market · Elegí lo esencial</title>
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Colmena Market: experiencia de comercio digital premium, catálogo, carrito y pedidos de demostración.">
+  <title>Colmena Market · Future Essentials</title>
   <link rel="stylesheet" href="/style.css">
   <script src="/script.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#catalog">Saltar al catálogo</a>
-  <div class="announcement">PORTFOLIO DEMO <span>Productos y pedidos de prueba. Sin cobros ni envíos.</span></div>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <div class="announcement">
+    <span class="pulse" aria-hidden="true"></span>
+    EXPERIENCIA DE PORTFOLIO
+    <span>Productos y pedidos de demostración · Sin cobros ni envíos</span>
+  </div>
+
   <header class="header">
-    <a class="brand" href="/">colmena<span>market</span><b aria-hidden="true">.</b></a>
-    <a class="catalog-link" href="#catalog">La colección</a>
-    <button id="open-cart" class="cart-button" type="button">Mi carrito <span id="cart-count">0</span></button>
+    <a class="brand" href="/" aria-label="Colmena Market, inicio">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">COLMENA<small>MARKET</small></span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <a class="catalog-link" href="#catalog">Colección</a>
+      <a class="catalog-link" href="#experience">Experiencia</a>
+    </nav>
+    <button id="open-cart" class="cart-button" type="button">
+      <span class="cart-label">Carrito</span>
+      <span id="cart-count">0</span>
+    </button>
   </header>
+
   <main>
-    <section class="intro" aria-labelledby="headline">
-      <div><p class="eyebrow">MENOS VUELTAS. MEJORES BÁSICOS.</p><h1 id="headline">Elegí lo<br><em>esencial.</em></h1></div>
-      <div class="intro-copy"><p>Una selección simple para tu día a día.<br>Explorá, combiná y armá tu próximo pedido.</p><a href="#catalog" class="text-link">Explorar la colección <span aria-hidden="true">↗</span></a></div>
-    </section>
-    <section id="catalog" aria-labelledby="catalog-title">
-      <div class="section-heading"><h2 id="catalog-title">La colección <span id="result-count"></span></h2><p>Precios de demostración en pesos argentinos</p></div>
-      <div class="toolbar">
-        <label class="search"><span>Buscar</span><input id="search" type="search" maxlength="100" placeholder="Perfumes, ropa, calzado…"></label>
-        <label>Categoría<select id="category"><option value="">Todo</option><option>Perfumes</option><option>Ropa</option><option>Calzado</option></select></label>
-        <label>Ordenar<select id="sort"><option value="featured">Destacados</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option></select></label>
+    <section class="hero" aria-labelledby="headline">
+      <div class="hero-copy">
+        <p class="eyebrow"><span>01</span> DIGITAL MARKETPLACE · 2026</p>
+        <h1 id="headline">El futuro<br>de lo <em>esencial.</em></h1>
+        <p class="hero-description">Una experiencia de compra diseñada con precisión. Productos seleccionados, interacción instantánea y una estética creada para el próximo capítulo.</p>
+        <div class="hero-actions">
+          <a href="#catalog" class="primary-link">Explorar colección <span aria-hidden="true">↗</span></a>
+          <span class="secure-label"><i aria-hidden="true"></i> Sistema operativo</span>
+        </div>
       </div>
-      <p id="catalog-status" role="status">Cargando la colección…</p>
-      <button id="retry" type="button" hidden>Volver a intentar</button>
+
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="orbit-core">
+          <span>CM</span>
+          <small>EST. 2026</small>
+        </div>
+        <span class="orbit-label label-one">SELECT</span>
+        <span class="orbit-label label-two">DISCOVER</span>
+      </div>
+    </section>
+
+    <section class="system-strip" aria-label="Características">
+      <article><span>01</span><div><strong>Selección curada</strong><small>Esenciales elegidos para vos</small></div></article>
+      <article><span>02</span><div><strong>Stock en tiempo real</strong><small>Validación en cada pedido</small></div></article>
+      <article><span>03</span><div><strong>Compra protegida</strong><small>Totales calculados en servidor</small></div></article>
+    </section>
+
+    <section id="catalog" aria-labelledby="catalog-title">
+      <div class="section-heading">
+        <div><p class="eyebrow"><span>02</span> ARCHIVO / COLECCIÓN</p><h2 id="catalog-title">Objetos seleccionados <span id="result-count"></span></h2></div>
+        <p>Precios de demostración<br>en pesos argentinos</p>
+      </div>
+
+      <div class="toolbar">
+        <label class="search"><span>BUSCAR EN EL ARCHIVO</span><input id="search" type="search" maxlength="100" placeholder="Perfumes, ropa, calzado…"></label>
+        <label><span>CATEGORÍA</span><select id="category"><option value="">Todo</option><option>Perfumes</option><option>Ropa</option><option>Calzado</option></select></label>
+        <label><span>ORDEN</span><select id="sort"><option value="featured">Destacados</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option></select></label>
+      </div>
+
+      <p id="catalog-status" role="status">Sincronizando la colección…</p>
+      <button id="retry" type="button">Volver a intentar</button>
       <div id="product-list" class="products" aria-busy="true"></div>
     </section>
-    <section class="note"><h2>Lo simple funciona.</h2><p>Explorá los productos y probá el recorrido de compra. El pedido se guarda como demostración; no ingreses datos personales ni medios de pago.</p><a href="https://github.com/romangon10/Colmena-Market">Ver el proyecto en GitHub ↗</a></section>
+
+    <section id="experience" class="experience">
+      <div class="experience-index">03</div>
+      <div>
+        <p class="eyebrow">COLMENA EXPERIENCE</p>
+        <h2>Diseñado para<br><em>lo que viene.</em></h2>
+      </div>
+      <div class="experience-copy">
+        <p>Explorá el catálogo, construí tu selección y probá un flujo de compra completo. Cada pedido valida el stock y se registra como demostración.</p>
+        <p class="fine">No ingreses datos personales ni medios de pago.</p>
+        <a href="https://github.com/romangon10/Colmena-Market">Ver arquitectura en GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
   </main>
-  <footer><span>colmena market.</span><p>Un proyecto de Román González · 2026</p></footer>
+
+  <footer>
+    <a class="brand footer-brand" href="/">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">COLMENA<small>MARKET</small></span>
+    </a>
+    <p>Future essentials · Buenos Aires · 2026</p>
+    <p>Proyecto de <a href="https://github.com/romangon10">Román González</a></p>
+  </footer>
+
   <dialog id="cart-dialog" aria-labelledby="cart-title">
-    <div class="dialog-heading"><h2 id="cart-title">Tu selección</h2><button id="close-cart" type="button" aria-label="Cerrar carrito">✕</button></div>
+    <div class="dialog-heading">
+      <div><p class="eyebrow">TU ARCHIVO</p><h2 id="cart-title">Selección</h2></div>
+      <button id="close-cart" type="button" aria-label="Cerrar carrito">✕</button>
+    </div>
     <p class="muted">Pedido de demostración · Sin cargos</p>
     <div id="cart-items"></div>
-    <div class="total"><span>Total</span><strong id="cart-total">$0</strong></div>
+    <div class="total"><span>Total estimado</span><strong id="cart-total">$0</strong></div>
     <p id="checkout-status" role="status"></p>
     <button id="checkout" class="primary" type="button">Confirmar pedido de prueba</button>
     <p class="fine">El stock se valida al confirmar. No se realizan pagos ni envíos.</p>
   </dialog>
+
   <div id="toast" class="toast" role="status" hidden></div>
 </body>
 </html>
