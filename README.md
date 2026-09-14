@@ -29,7 +29,8 @@ npm run dev
 ## Implemented
 
 - Responsive Spanish storefront with category filtering, text search and price sorting.
-- Accessible native dialog cart with quantity controls, loading states and retry feedback.
+- Accessible native dialogs for product quick view and cart, with quantity controls, loading states and retry feedback.
+- Favorites, favorites-only filtering and cart state persisted locally in the browser.
 - Products, stock, orders and order line snapshots in a file-backed SQLite database.
 - Server-side prices stored as integer centavos; the API ignores submitted prices and totals.
 - Atomic orders: either every requested item is in stock and saved, or nothing changes.
@@ -41,12 +42,12 @@ npm run dev
 
 | Layer | Files | Responsibility |
 | --- | --- | --- |
-| Browser | `index.html`, `style.css`, `script.js` | Catalog, temporary in-memory cart, checkout feedback |
+| Browser | `index.html`, `style.css`, `script.js` | Catalog, favorites, persistent local cart, quick view and checkout feedback |
 | HTTP | `server/index.js` | Routes, content types, body limits and public asset serving |
 | Persistence | `server/store.js` | SQLite schema, catalog queries and transactional checkout |
 | Tests | `test/market.test.js` | Business rules, persistence and HTTP boundaries |
 
-The browser cart is temporary and clears on page reload. Confirmed orders persist in SQLite across server restarts. The server recalculates totals and checks stock on every new order.
+The browser stores favorites and the unconfirmed cart in local storage so they survive a page reload. Confirmed orders persist in SQLite across server restarts. The server recalculates totals and checks stock on every new order.
 
 ## API
 
@@ -67,7 +68,7 @@ Responses: `201` new order; `200` replay; `400` invalid input; `404` missing pro
 
 ## QA coverage
 
-Tests verify catalog filtering, SQL input handling, server-controlled totals, stock updates, duplicate requests, invalid quantities, all-or-nothing checkout, missing products, restart persistence, HTTP response codes and private-file protection.
+Tests verify JavaScript syntax, catalog filtering, SQL input handling, server-controlled totals, stock updates, duplicate requests, invalid quantities, all-or-nothing checkout, missing products, restart persistence, HTTP response codes and private-file protection.
 
 Manual browser checks still to perform: keyboard dialog interaction, small-screen layout, external photo availability and full checkout interaction. Browser visual/end-to-end verification has not been performed.
 
