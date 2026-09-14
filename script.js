@@ -13,7 +13,15 @@ const previewProducts = [
   { id: 4, name: 'Zapatillas Urban', category: 'Calzado', description: 'Líneas simples para la ciudad. Talle único de demostración.', price: 5000000, stock: 8 }
 ];
 let products = [];
-let cart = new Map();
+const readStored = (key, fallback) => {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch { return fallback; }
+};
+let cart = new Map(readStored('colmena-cart', []).filter(entry => Array.isArray(entry) && entry.length === 2));
+let favorites = new Set(readStored('colmena-favorites', []).filter(Number.isSafeInteger));
+let favoritesOnly = false;
 let requestKey = null;
 let submitting = false;
 let loadVersion = 0;
@@ -31,6 +39,31 @@ async function api(path, options) {
   if (!response.ok) throw new Error(data.error || 'La operación no pudo completarse.');
   return data;
 }
+function saveExperience() {
+  try {
+    localStorage.setItem('colmena-cart', JSON.stringify([...cart]));
+    localStorage.setItem('colmena-favorites', JSON.stringify([...favorites]));
+  } catch {}
+}
+function toggleFavorite(id) {
+  if (favorites.has(id)) favorites.delete(id); else favorites.add(id);
+  saveExperience();
+  renderProducts();
+  $('favorites-count').textContent = String(favorites.size);
+  toast(favorites.has(id) ? 'Guardado en favoritos' : 'Eliminado de favoritos');
+}
+function openProduct(product) {
+  $('detail-image').src = photos[product.id];
+  $('detail-image').alt = `Imagen ilustrativa: ${product.name}`;
+  $('detail-category').textContent = product.category;
+  $('detail-name').textContent = product.name;
+  $('detail-description').textContent = product.description;
+  $('detail-price').textContent = money(product.price);
+  $('detail-stock').textContent = product.stock ? `${product.stock} unidades disponibles` : 'Agotado';
+  $('detail-add').dataset.productId = String(product.id);
+  $('detail-add').disabled = product.stock === 0;
+  $('product-dialog').showModal();
+}
 function toast(message) {
   $('toast').textContent = message;
   $('toast').hidden = false;
@@ -41,6 +74,7 @@ function renderProducts() {
   const q = $('search').value.trim().toLocaleLowerCase('es');
   const category = $('category').value;
   let shown = products.filter(p => (!category || p.category === category) && `${p.name} ${p.description}`.toLocaleLowerCase('es').includes(q));
+  if (favoritesOnly) shown = shown.filter(p => favorites.has(p.id));
   const sort = $('sort').value;
   if (sort !== 'featured') shown.sort((a, b) => sort === 'price-asc' ? a.price - b.price : b.price - a.price);
   $('product-list').replaceChildren();
@@ -56,8 +90,19 @@ function renderProducts() {
     img.width = 400;
     img.height = 450;
     const caption = element('span', 'image-note', 'Imagen ilustrativa');
+    const drop = element('span', 'drop-tag', `DROP 0${p.id}`);
+    const mediaActions = element('div', 'media-actions');
+    const favorite = element('button', 'favorite', favorites.has(p.id) ? '◆' : '◇');
+    favorite.type = 'button';
+    favorite.setAttribute('aria-label', `${favorites.has(p.id) ? 'Quitar' : 'Agregar'} ${p.name} ${favorites.has(p.id) ? 'de' : 'a'} favoritos`);
+    favorite.setAttribute('aria-pressed', String(favorites.has(p.id)));
+    favorite.addEventListener('click', () => toggleFavorite(p.id));
+    const quick = element('button', 'quick-view', 'Vista rápida');
+    quick.type = 'button';
+    quick.addEventListener('click', () => openProduct(p));
+    mediaActions.append(favorite, quick);
     img.addEventListener('error', () => { img.hidden = true; caption.textContent = 'Imagen no disponible'; });
-    media.append(img, caption);
+    media.append(img, drop, caption, mediaActions);
     const bottom = element('div', 'product-bottom');
     const button = element('button', 'add', 'Agregar +');
     button.type = 'button';
@@ -78,6 +123,7 @@ function changeQuantity(id, delta) {
     return toast('No hay más unidades disponibles.');
   }
   if (next <= 0) cart.delete(id); else cart.set(id, next);
+  saveExperience();
   requestKey = null;
   $('checkout-status').textContent = '';
   renderCart();
@@ -121,6 +167,11 @@ async function loadProducts() {
     const data = await api('/api/products');
     if (version !== loadVersion) return;
     products = data.products;
+    cart = new Map([...cart].flatMap(([id, quantity]) => {
+      const product = products.find(item => item.id === id);
+      return product && quantity > 0 ? [[id, Math.min(quantity, product.stock, 20)]] : [];
+    }));
+    saveExperience();
     renderProducts();
     renderCart();
   } catch {
@@ -132,7 +183,26 @@ async function loadProducts() {
     $('retry').hidden = false;
   } finally { if (version === loadVersion) $('product-list').setAttribute('aria-busy', 'false'); }
 }
+$('favorites-count').textContent = String(favorites.size);
+$('favorites-filter').addEventListener('click', () => {
+  favoritesOnly = !favoritesOnly;
+  $('favorites-filter').setAttribute('aria-pressed', String(favoritesOnly));
+  renderProducts();
+});
 $('open-cart').addEventListener('click', () => { renderCart(); $('cart-dialog').showModal(); });
+$('close-product').addEventListener('click', () => $('product-dialog').close());
+$('detail-add').addEventListener('click', () => {
+  changeQuantity(Number($('detail-add').dataset.productId), 1);
+  $('product-dialog').close();
+});
+$('back-top').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+window.addEventListener('scroll', () => { $('back-top').hidden = window.scrollY < 650; }, { passive: true });
+document.addEventListener('keydown', event => {
+  if (event.key === '/' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+    event.preventDefault();
+    $('search').focus();
+  }
+});
 $('close-cart').addEventListener('click', () => $('cart-dialog').close());
 $('retry').addEventListener('click', loadProducts);
 for (const id of ['search', 'category', 'sort']) $(id).addEventListener(id === 'search' ? 'input' : 'change', renderProducts);
@@ -146,6 +216,7 @@ $('checkout').addEventListener('click', async () => {
   try {
     const order = await api('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': requestKey }, body: JSON.stringify({ items: [...cart].map(([id, quantity]) => ({ id, quantity })) }) });
     cart.clear();
+    saveExperience();
     requestKey = null;
     $('checkout-status').textContent = `Pedido ${order.id.slice(0, 8)} guardado. Total: ${money(order.total)}. No se realizó ningún cobro.`;
   } catch (error) {
