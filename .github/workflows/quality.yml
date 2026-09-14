@@ -25,7 +25,8 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      # Tests and build use only Node built-ins; no dependency install is needed.
+      - name: Check JavaScript syntax
+        run: npm run check
       - name: Run automated tests
         run: npm test
       - name: Build
